@@ -10,7 +10,7 @@
                 "map_base",
                 "map_history",
                 "underground_resource_history",
-                "basements_history",
+                "bases_history",
                 "facilities_history",
                 "units_history",
                 "countries_history",
@@ -30,12 +30,12 @@
                         "$ref": "#/$defs/underground_resource_history"
                     }
                 },
-                "basements_history": {
+                "bases_history": {
                     "type": "object",
                     "description": "拠点IDをキーとする辞書",
                     "patternProperties": {
                         "^[A-Za-z0-9_\\-\\.]+$": {
-                            "$ref": "#/$defs/basement_history"
+                            "$ref": "#/$defs/base_history"
                         }
                     }
                 },
@@ -291,7 +291,7 @@
                     "type": "integer",
                     "description": "ターン終了時の最終訪問者マス数"
                 },
-                "num_basement": {
+                "num_base": {
                     "type": "integer",
                     "description": "ターン終了時の拠点数"
                 },
@@ -299,7 +299,7 @@
                     "type": "integer",
                     "description": "ターン終了時の施設数"
                 },
-                "population_basement": {
+                "population_base": {
                     "type": "integer",
                     "description": "ターン終了時の拠点総人口"
                 },
@@ -336,14 +336,14 @@
                 }
             }
         },
-        "basement_history": {
+        "base_history": {
             "type": "object",
             "additionalProperties": false,
             "required": [
                 "position",
                 "pop_turn",
                 "lost_turn",
-                "basement_snapshots"
+                "base_snapshots"
             ],
             "properties": {
                 "position": {
@@ -359,16 +359,16 @@
                     "type": "integer",
                     "description": "拠点が消えたターン。拠点破壊フェーズ/拠点食糧消費フェーズに消滅。"
                 },
-                "basement_snapshots": {
+                "base_snapshots": {
                     "type": "array",
                     "description": "存在ターン数(lost_turn-pop_turn)個の要素を持つ配列。出現したターン内に消えた場合は要素数0",
                     "items": {
-                        "$ref": "#/$defs/basement_snapshot"
+                        "$ref": "#/$defs/base_snapshot"
                     }
                 }
             }
         },
-        "basement_snapshot": {
+        "base_snapshot": {
             "type": "object",
             "additionalProperties": false,
             "required": [
@@ -545,7 +545,7 @@
                 },
                 "goal_position": {
                     "type": "integer",
-                    "description": "目的地点：x+y*widthの値",
+                    "description": "目標地点：x+y*widthの値",
                     "minimum": 0
                 },
                 "taret_position": {
@@ -709,12 +709,11 @@
                 "鉱山",
                 "油田",
                 "港",
-                "橋",
                 "道路",
                 "大学",
                 "天文台",
                 "工房",
-                "プラント",
+                "工場",
                 "塔",
                 "灯台",
                 "防衛陣地"
@@ -725,8 +724,7 @@
             "enum": [
                 "開拓者",
                 "労働者",
-                "食糧輸送隊",
-                "物資輸送隊",
+                "輸送隊",
                 "研究者",
                 "職人",
                 "探検隊",
