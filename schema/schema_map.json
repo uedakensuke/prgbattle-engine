@@ -1,0 +1,338 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PrgBattle Spec Validation",
+  "type": "object",
+  "$defs": {
+    "map_info": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["static", "width", "height", "start", "snapshots"],
+      "properties": {
+        "static": {
+          "$ref": "#/$defs/space_static"
+        },
+        "width": {
+          "type": "integer"
+        },
+        "height": {
+          "type": "integer"
+        },
+        "start": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "description": "位置：x+y*widthの値",
+            "minimum": 0
+          }
+        },
+        "snapshots": {
+          "type": "array",
+          "description": "ターン数の要素を持つ配列",
+          "items": {
+            "$ref": "#/$defs/space_snapshot"
+          }
+        }
+      }
+    },
+    "space_static": {
+      "type": "object",
+      "description": "ゲーム中で一定のマップ情報及び開始時の初期値",
+      "additionalProperties": false,
+      "required": [
+        "terrain_type_id",
+        "region",
+        "max_temperature",
+        "min_temperature",
+        "rainfall",
+        "gift"
+      ],
+      "properties": {
+        "terrain_type_id": {
+          "type": "array",
+          "description": "width * height個の要素を持つ配列",
+          "items": {
+            "type": "string",
+            "description": "地形ID"
+          }
+        },
+        "region": {
+          "type": "array",
+          "description": "width * height個の要素を持つ配列",
+          "items": {
+            "type": "string",
+            "description": "地域名"
+          }
+        },
+        "max_temperature": {
+          "type": "array",
+          "description": "width * height個の要素を持つ配列",
+          "items": {
+            "description": "最高気温を0~100で表す。0~25で極寒、25~50で冷涼、50~75で温暖、75~100で高温。最低気温を下回らない。",
+            "type": "number",
+            "minimum": 0.0,
+            "maximum": 100.0
+          }
+        },
+        "min_temperature": {
+          "type": "array",
+          "description": "width * height個の要素を持つ配列",
+          "items": {
+            "description": "最低気温を0~100で表す。0~25で極寒、25~50で冷涼、50~75で温暖、75~100で高温。最高気温を超えない。",
+            "type": "number",
+            "minimum": 0.0,
+            "maximum": 100.0
+          }
+        },
+        "rainfall": {
+          "type": "array",
+          "description": "width * height個の要素を持つ配列",
+          "items": {
+            "description": "降水量の多さを0~100で表す。平均気温を超えない",
+            "type": "number",
+            "minimum": 0.0,
+            "maximum": 100.0
+          }
+        },
+        "gift": {
+          "type": "string",
+          "description": "ギフトID（資源IDもしくは特産品ID）。空文字の場合、資源・特産品が無い物として扱う"
+        }
+      }
+    },
+    "space_snapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["wildlife", "forest", "construction_labor"],
+      "properties": {
+        "wildlife": {
+          "type": "array",
+          "description": "width * height個の要素を持つ配列",
+          "items": {
+            "description": "野生動物の量を0~100で表す",
+            "type": "number",
+            "minimum": 0.0,
+            "maximum": 100.0
+          }
+        },
+        "forest": {
+          "type": "array",
+          "description": "width * height個の要素を持つ配列",
+          "items": {
+            "description": "森林の量を0~100で表す。20未満で疎林、20以上40未満で森、40以上で密林",
+            "type": "number",
+            "minimum": 0.0,
+            "maximum": 100.0
+          }
+        },
+        "construction_labor": {
+          "type": "array",
+          "description": "width * height個の要素を持つ配列",
+          "items": {
+            "description": "施設建造の為に投下済みの労力を表す",
+            "type": "number",
+            "minimum": 0.0
+          }
+        }
+      }
+    },
+    "gift_type_dict": {
+      "type": "object",
+      "description": "ゲームで使用する資源・特産品の辞書。ギフトID（資源IDもしくは特産品ID）をキーとする",
+      "patternProperties": {
+        "^[A-Za-z0-9_\\-\\.]+$": {
+          "$ref": "#/$defs/gift_type"
+        }
+      }
+    },
+    "gift_type": {
+      "type": "object",
+      "definition": "資源・特産品の種類を表す",
+      "required": ["name", "development", "tech"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "資源タイプ名"
+        },
+        "development": {
+          "$ref": "schema_common.json#/$defs/development_dict"
+        },
+        "tech": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "yield": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "material": {
+              "type": "number"
+            },
+            "money": {
+              "type": "number"
+            }
+          }
+        },
+        "bonus": {
+          "$ref": "#/$defs/bonus"
+        },
+        "level_cap": {
+          "$ref": "schema_common.json#/$defs/ref_or_calc_or_function"
+        }
+      }
+    },
+    "bonus": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "ボーナス名"
+        },
+        "target": {
+          "$ref": "schema_common.json#/$defs/target"
+        },
+        "effect_per_level": {
+          "type": ["number", "string"],
+          "description": "効果の程度。numberを指定した場合は加算。文字列型でx%とした場合は%の値を加算した後に乗算する"
+        },
+        "max_level": {
+          "type": "integer"
+        }
+      }
+    },
+    "terrain_type_dict": {
+      "type": "object",
+      "description": "ゲームで使用する地形タイプの辞書。地形タイプIDをキーとする",
+      "patternProperties": {
+        "^[A-Za-z0-9_\\-\\.]+$": {
+          "$ref": "#/$defs/terrain_type"
+        }
+      }
+    },
+    "terrain_type": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "base_capable",
+        "forest_capable",
+        "occurusion",
+        "defence"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "地形タイプ名"
+        },
+        "base_capable": {
+          "type": "boolean",
+          "description": "拠点作成可否"
+        },
+        "forest_capable": {
+          "type": "boolean",
+          "description": "森林有無"
+        },
+        "occurusion": {
+          "type": "integer",
+          "description": "視界遮蔽レベル"
+        },
+        "defence": {
+          "type": "object",
+          "description": "地形防御ボーナス",
+          "additionalProperties": false,
+          "properties": {
+            "land": {
+              "type": "number",
+              "description": "陸上ユニット（非乗船）の防御ボーナス"
+            },
+            "water": {
+              "type": "number",
+              "description": "水上ユニットの防御ボーナス"
+            }
+          }
+        }
+      }
+    },
+    "forest_type_dict": {
+      "type": "object",
+      "description": "ゲームで使用する森林タイプの辞書。森林タイプIDをキーとする",
+      "patternProperties": {
+        "^[A-Za-z0-9_\\-\\.]+$": {
+          "$ref": "#/$defs/forest_type"
+        }
+      }
+    },
+    "forest_type": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "base_capable", "occurusion", "defence"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "森林タイプ名"
+        },
+        "base_capable": {
+          "type": "boolean",
+          "description": "拠点作成可否"
+        },
+        "occurusion": {
+          "type": "integer",
+          "description": "視界遮蔽レベル"
+        },
+        "defence": {
+          "type": "object",
+          "description": "地形防御ボーナス",
+          "additionalProperties": false,
+          "properties": {
+            "land": {
+              "type": "number",
+              "description": "陸上ユニット（非乗船）の防御ボーナス"
+            },
+            "water": {
+              "type": "number",
+              "description": "水上ユニットの防御ボーナス"
+            }
+          }
+        }
+      }
+    },
+    "move_type_dict": {
+      "type": "object",
+      "description": "ゲームで使用する移動タイプの辞書。移動タイプIDをキーとする",
+      "patternProperties": {
+        "^[A-Za-z0-9_\\-\\.]+$": {
+          "$ref": "#/$defs/move_type"
+        }
+      }
+    },
+    "move_type": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "terrain_cost", "forest_cost"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "移動タイプ名"
+        },
+        "terrain_cost": {
+          "type": "object",
+          "description": "地形タイプ毎の移動コスト。地形タイプクエリをキーとする",
+          "patternProperties": {
+            "^[A-Za-z0-9_\\-\\.\\*\\|]+$": {
+              "type": "integer"
+            }
+          }
+        },
+        "forest_cost": {
+          "type": "object",
+          "description": "森林タイプ毎の移動コスト。森林タイプクエリをキーとする",
+          "patternProperties": {
+            "^[A-Za-z0-9_\\-\\.\\*\\|]+$": {
+              "type": "integer"
+            }
+          }
+        }
+      }
+    }
+  }
+}

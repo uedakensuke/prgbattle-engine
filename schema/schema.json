@@ -3,66 +3,88 @@
     "title": "PrgBattle Spec Validation",
     "type": "object",
     "$defs": {
+        "game_setting": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "terrain_type_dict",
+                "forest_type_dict",
+                "move_type_dict",
+                "unit_type_dict"
+            ],
+            "properties": {
+                "terrain_type_dict": {
+                    "$ref": "schema_map.json#/$defs/terrain_type_dict"
+                },
+                "forest_type_dict": {
+                    "$ref": "schema_map.json#/$defs/forest_type_dict"
+                },
+                "resource_type_dict": {
+                    "$ref": "schema_map.json#/$defs/resource_type_dict"
+                },
+                "move_type_dict": {
+                    "$ref": "schema_map.json#/$defs/move_type_dict"
+                },
+                "unit_type_dict": {
+                    "$ref": "schema_unit.json#/$defs/unit_type_dict"
+                },
+                "facility_type_dict": {
+                    "$ref": "schema_facility.json#/$defs/facility_type_dict"
+                }
+            }
+        },
         "game_result": {
             "type": "object",
             "additionalProperties": false,
             "required": [
-                "map_base",
+                "map_static",
                 "map_history",
-                "underground_resource_history",
-                "bases_history",
-                "facilities_history",
-                "units_history",
-                "countries_history",
+                "base_infos",
+                "facility_infos",
+                "unit_infos",
+                "country_infos",
                 "wars"
             ],
             "properties": {
-                "map_base": {
-                    "$ref": "#/$defs/map_base"
+                "map_static": {
+                    "$ref": "schema_map.json#/$defs/map_static"
                 },
                 "map_history": {
-                    "$ref": "#/$defs/map_history"
+                    "$ref": "schema_map.json#/$defs/map_history"
                 },
-                "underground_resource_history": {
-                    "type": "array",
-                    "description": "リソース埋蔵位置分の配列",
-                    "items": {
-                        "$ref": "#/$defs/underground_resource_history"
-                    }
-                },
-                "bases_history": {
+                "base_infos": {
                     "type": "object",
                     "description": "拠点IDをキーとする辞書",
                     "patternProperties": {
                         "^[A-Za-z0-9_\\-\\.]+$": {
-                            "$ref": "#/$defs/base_history"
+                            "$ref": "schema_base.json#/$defs/base_info"
                         }
                     }
                 },
-                "facilities_history": {
+                "facility_infos": {
                     "type": "object",
                     "description": "施設IDをキーとする辞書",
                     "patternProperties": {
                         "^[A-Za-z0-9_\\-\\.]+$": {
-                            "$ref": "#/$defs/facility_history"
+                            "$ref": "schema_facility.json#/$defs/facility_info"
                         }
                     }
                 },
-                "units_history": {
+                "unit_infos": {
                     "type": "object",
                     "description": "ユニットIDをキーとする辞書",
                     "patternProperties": {
                         "^[A-Za-z0-9_\\-\\.]+$": {
-                            "$ref": "#/$defs/unit_history"
+                            "$ref": "schema_unit.json#/$defs/unit_info"
                         }
                     }
                 },
-                "countries_history": {
+                "country_infos": {
                     "type": "object",
                     "description": "国IDをキーとする辞書",
                     "patternProperties": {
                         "^[A-Za-z0-9_\\-\\.]+$": {
-                            "$ref": "#/$defs/country_history"
+                            "$ref": "schema_country.json#/$defs/country_info"
                         }
                     }
                 },
@@ -71,241 +93,6 @@
                     "items": {
                         "$ref": "#/$defs/war"
                     }
-                }
-            }
-        },
-        "map_history": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-                "wildlife_layer",
-                "forest_layer"
-            ],
-            "properties": {
-                "wildlife_layer": {
-                    "type": "array",
-                    "description": "経過ターン数の要素を持つ配列",
-                    "items": {
-                        "$ref": "#/$defs/layer_snapshot"
-                    }
-                },
-                "forest_layer": {
-                    "type": "array",
-                    "description": "経過ターン数の要素を持つ配列",
-                    "items": {
-                        "$ref": "#/$defs/layer_snapshot"
-                    }
-                }
-            }
-        },
-        "underground_resource_history": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-                "kind",
-                "position",
-                "reserves"
-            ],
-            "properties": {
-                "kind": {
-                    "$ref": "#/$defs/resource_enum"
-                },
-                "position": {
-                    "type": "integer",
-                    "description": "位置：x+y*widthの値",
-                    "minimum": 0
-                },
-                "reserves": {
-                    "type": "array",
-                    "description": "経過ターン数の要素を持つ配列。各ターン終了時の資源埋蔵量",
-                    "items": {
-                        "$ref": "#/$defs/relative_value"
-                    }
-                }
-            }
-        },
-        "country_history": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-                "name",
-                "pop_turn",
-                "lost_turn",
-                "looking_layer_diff",
-                "looked_layer_diff",
-                "country_snapshots"
-            ],
-            "properties": {
-                "name": {
-                    "type": "string",
-                    "description": "国名"
-                },
-                "pop_turn": {
-                    "type": "integer",
-                    "description": "国が出現したターン"
-                },
-                "lost_turn": {
-                    "type": "integer",
-                    "description": "国が消えたターン"
-                },
-                "looking_layer_diff": {
-                    "type": "array",
-                    "description": "存在ターン数(lost_turn-pop_turn)個の要素を持つ配列。",
-                    "items": {
-                        "$ref": "#/$defs/layer_diff"
-                    }
-                },
-                "looked_layer_diff": {
-                    "type": "array",
-                    "description": "存在ターン数(lost_turn-pop_turn)個の要素を持つ配列。",
-                    "items": {
-                        "$ref": "#/$defs/layer_diff"
-                    }
-                },
-                "country_snapshots": {
-                    "type": "array",
-                    "description": "存在ターン数(lost_turn-pop_turn)個の要素を持つ配列。出現したターン内に消えた場合は要素数0",
-                    "items": {
-                        "$ref": "#/$defs/country_snapshot"
-                    }
-                }
-            }
-        },
-        "country_snapshot": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-                "tech",
-                "money",
-                "resource",
-                "relation",
-                "score"
-            ],
-            "properties": {
-                "tech": {
-                    "type": "number",
-                    "format": "decimal",
-                    "description": "ターン終了時の技術ポイント",
-                    "minimum": 0.0
-                },
-                "money": {
-                    "type": "number",
-                    "format": "decimal",
-                    "description": "ターン終了時の保有資金",
-                    "minimum": 0.0
-                },
-                "resource": {
-                    "$ref": "#/$defs/having_resource_snapshot"
-                },
-                "relation": {
-                    "$ref": "#/$defs/relation_snapshot"
-                },
-                "score": {
-                    "$ref": "#/$defs/score_snapshot"
-                }
-            }
-        },
-        "relation_snapshot": {
-            "type": "object",
-            "description": "国IDをキーとする辞書",
-            "patternProperties": {
-                "^[A-Za-z0-9_\\-\\.]+$": {
-                    "type": "integer",
-                    "description": "ターン終了時の関係値",
-                    "minimum": -100,
-                    "maximum": 100
-                }
-            }
-        },
-        "having_resource_snapshot": {
-            "type": "object",
-            "description": "保有資源",
-            "required": [
-                "stone",
-                "precious_metal",
-                "iron",
-                "sulfur",
-                "coal",
-                "petroleum",
-                "rare_metal"
-            ],
-            "properties": {
-                "stone": {
-                    "type": "number",
-                    "format": "decimal",
-                    "description": "ターン終了時の保有石材資源",
-                    "minimum": 0.0
-                },
-                "precious_metal": {
-                    "type": "number",
-                    "format": "decimal",
-                    "description": "ターン終了時の保有貴金属資源",
-                    "minimum": 0.0
-                },
-                "iron": {
-                    "type": "number",
-                    "format": "decimal",
-                    "description": "ターン終了時の保有鉄資源",
-                    "minimum": 0.0
-                },
-                "sulfur": {
-                    "type": "number",
-                    "format": "decimal",
-                    "description": "ターン終了時の保有硫黄資源",
-                    "minimum": 0.0
-                },
-                "coal": {
-                    "type": "number",
-                    "format": "decimal",
-                    "description": "ターン終了時の保有石炭資源",
-                    "minimum": 0.0
-                },
-                "petroleum": {
-                    "type": "number",
-                    "format": "decimal",
-                    "description": "ターン終了時の保有石油資源",
-                    "minimum": 0.0
-                },
-                "rare_metal": {
-                    "type": "number",
-                    "format": "decimal",
-                    "description": "ターン終了時の保有レアメタル資源",
-                    "minimum": 0.0
-                }
-            }
-        },
-        "socre_snapshot": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-                "num_looked_sight",
-                "num_last_walk",
-                "num_facility"
-            ],
-            "properties": {
-                "num_looked_sight": {
-                    "type": "integer",
-                    "description": "ターン終了時の目視済みマス数"
-                },
-                "num_last_walk": {
-                    "type": "integer",
-                    "description": "ターン終了時の最終訪問者マス数"
-                },
-                "num_base": {
-                    "type": "integer",
-                    "description": "ターン終了時の拠点数"
-                },
-                "num_facility": {
-                    "type": "integer",
-                    "description": "ターン終了時の施設数"
-                },
-                "population_base": {
-                    "type": "integer",
-                    "description": "ターン終了時の拠点総人口"
-                },
-                "population_unit": {
-                    "type": "integer",
-                    "description": "ターン終了時のユニット総人口"
                 }
             }
         },
@@ -335,415 +122,6 @@
                     "minimum": 0
                 }
             }
-        },
-        "base_history": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-                "position",
-                "pop_turn",
-                "lost_turn",
-                "base_snapshots"
-            ],
-            "properties": {
-                "position": {
-                    "type": "integer",
-                    "description": "位置：x+y*widthの値",
-                    "minimum": 0
-                },
-                "pop_turn": {
-                    "type": "integer",
-                    "description": "拠点が出現したターン。定住フェーズに生成。"
-                },
-                "lost_turn": {
-                    "type": "integer",
-                    "description": "拠点が消えたターン。拠点破壊フェーズ/拠点食糧消費フェーズに消滅。"
-                },
-                "base_snapshots": {
-                    "type": "array",
-                    "description": "存在ターン数(lost_turn-pop_turn)個の要素を持つ配列。出現したターン内に消えた場合は要素数0",
-                    "items": {
-                        "$ref": "#/$defs/base_snapshot"
-                    }
-                }
-            }
-        },
-        "base_snapshot": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-                "wall_scale",
-                "wall_strength",
-                "population",
-                "food",
-                "supply",
-                "hunger_point",
-                "occupation",
-                "loyalty",
-                "country"
-            ],
-            "properties": {
-                "wall_scale": {
-                    "type": "number",
-                    "description": "ターン終了時の城壁規模",
-                    "minimum": 0.0
-                },
-                "wall_strength": {
-                    "type": "number",
-                    "description": "ターン終了時の城壁強度",
-                    "minimum": 0.0
-                },
-                "population": {
-                    "type": "number",
-                    "format": "decimal",
-                    "description": "ターン終了時の拠点人口",
-                    "minimum": 0.01
-                },
-                "food": {
-                    "type": "number",
-                    "description": "ターン終了時の備蓄食糧",
-                    "minimum": 0.0
-                },
-                "supply": {
-                    "type": "number",
-                    "description": "ターン終了時の備蓄物資",
-                    "minimum": 0.0
-                },
-                "hunger_point": {
-                    "type": "number",
-                    "description": "ターン終了時の飢餓ポイント",
-                    "minimum": 0.0
-                },
-                "occupation": {
-                    "type": "number",
-                    "description": "ターン終了時の占領ポイント。>0は占領状態を意味する。",
-                    "minimum": 0.0
-                },
-                "loyalty": {
-                    "type": "object",
-                    "description": "国IDをキーとする辞書",
-                    "patternProperties": {
-                        "^[A-Za-z0-9_\\-\\.]+$": {
-                            "type": "integer",
-                            "description": "ターン終了時の忠誠心",
-                            "minimum": -100,
-                            "maximum": 100
-                        }
-                    }
-                },
-                "country": {
-                    "type": "string",
-                    "description": "ターン終了時における所有国の国ID"
-                }
-            }
-        },
-        "facility_history": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-                "position",
-                "pop_turn",
-                "lost_turn",
-                "facility_snapshots"
-            ],
-            "properties": {
-                "position": {
-                    "type": "integer",
-                    "description": "位置：x+y*widthの値",
-                    "minimum": 0
-                },
-                "pop_turn": {
-                    "type": "integer",
-                    "description": "施設が出現したターン。建造フェーズに生成"
-                },
-                "lost_turn": {
-                    "type": "integer",
-                    "description": "施設が消えたターン。施設破壊フェーズに消滅"
-                },
-                "facility_snapshots": {
-                    "type": "array",
-                    "description": "存在ターン数(lost_turn-pop_turn)個の要素を持つ配列。出現したターン内に消えた場合は要素数0",
-                    "items": {
-                        "$ref": "#/$defs/facility_snapshot"
-                    }
-                }
-            }
-        },
-        "facility_snapshot": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-                "kind",
-                "active",
-                "country"
-            ],
-            "properties": {
-                "kind": {
-                    "$ref": "#/$defs/facility_enum"
-                },
-                "active": {
-                    "type": "boolean",
-                    "description": "ターン終了時の稼働状態"
-                },
-                "country": {
-                    "type": "string",
-                    "description": "ターン終了時における所有国の国ID"
-                }
-            }
-        },
-        "unit_history": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-                "kind",
-                "pop_turn",
-                "lost_turn",
-                "unit_snapshots"
-            ],
-            "properties": {
-                "kind": {
-                    "$ref": "#/$defs/unit_enum"
-                },
-                "pop_turn": {
-                    "type": "integer",
-                    "description": "ユニットが出現したターン。ターン開始時に現れる。"
-                },
-                "lost_turn": {
-                    "type": "integer",
-                    "description": "ユニットが消えたターン。"
-                },
-                "unit_snapshots": {
-                    "type": "array",
-                    "description": "存在ターン数(lost_turn-pop_turn)個の要素を持つ配列。出現したターン内に消えた場合は要素数0",
-                    "items": {
-                        "$ref": "#/$defs/unit_snapshot"
-                    }
-                }
-            }
-        },
-        "unit_snapshot": {
-            "type": "object",
-            "description": "ゲーム中で時刻と共に変わるユニット情報。ターン終了時の値。",
-            "additionalProperties": false,
-            "required": [
-                "position",
-                "goal_position",
-                "taret_position",
-                "move_point",
-                "population",
-                "food",
-                "supply",
-                "hunger_point",
-                "armed",
-                "on_board"
-            ],
-            "properties": {
-                "position": {
-                    "type": "integer",
-                    "description": "ユニット位置：x+y*widthの値",
-                    "minimum": 0
-                },
-                "goal_position": {
-                    "type": "integer",
-                    "description": "目標地点：x+y*widthの値",
-                    "minimum": 0
-                },
-                "taret_position": {
-                    "type": "integer",
-                    "description": "目標位置：x+y*widthの値",
-                    "minimum": 0
-                },
-                "move_point": {
-                    "type": "integer",
-                    "description": "移動ポイント",
-                    "minimum": 0
-                },
-                "population": {
-                    "type": "number",
-                    "format": "decimal",
-                    "description": "ターン終了時のユニット人口",
-                    "minimum": 0.01
-                },
-                "food": {
-                    "type": "number",
-                    "description": "ターン終了時の携行食糧",
-                    "minimum": 0.0
-                },
-                "supply": {
-                    "type": "number",
-                    "description": "ターン終了時の携行物資",
-                    "minimum": 0.0
-                },
-                "hunger_point": {
-                    "type": "number",
-                    "description": "ターン終了時の飢餓ポイント",
-                    "minimum": 0.0
-                },
-                "armed": {
-                    "type": "integer",
-                    "description": "ターン終了時の武装値",
-                    "minimum": 0.0
-                },
-                "on_board": {
-                    "type": "boolean",
-                    "description": "乗船状態"
-                }
-            }
-        },
-        "layer_snapshot": {
-            "type": "array",
-            "description": "map.size.x * map.size.y個の要素を持つ配列",
-            "items": {
-                "$ref": "#/$defs/relative_value"
-            }
-        },
-        "layer_diff": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-                "positions",
-                "diffs"
-            ],
-            "properties": {
-                "positions": {
-                    "type": "array",
-                    "description": "変化したマスの位置のリスト。要素数は変化したマス数",
-                    "items": {
-                        "type": "integer",
-                        "description": "位置：x+y*width"
-                    }
-                },
-                "diffs": {
-                    "type": "array",
-                    "description": "変化したマスの変化量リスト。要素数は変化したマス数",
-                    "items": {
-                        "type": "number",
-                        "description": "変化量"
-                    }
-                }
-            }
-        },
-        "map_base": {
-            "type": "object",
-            "description": "ゲーム中で一定のマップ情報及び開始時の初期値",
-            "additionalProperties": false,
-            "required": [
-                "width",
-                "height",
-                "spaces"
-            ],
-            "properties": {
-                "width": {
-                    "type": "integer"
-                },
-                "height": {
-                    "type": "integer"
-                },
-                "spaces": {
-                    "type": "array",
-                    "description": "width * height個の要素を持つ配列",
-                    "items": {
-                        "$ref": "#/$defs/space"
-                    }
-                }
-            }
-        },
-        "space": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-                "terrain",
-                "climate"
-            ],
-            "properties": {
-                "terrain": {
-                    "$ref": "#/$defs/terrain_enum"
-                },
-                "climate": {
-                    "$ref": "#/$defs/climate"
-                },
-                "resource_kind": {
-                    "$ref": "#/$defs/resource_enum"
-                },
-                "initial_resource": {
-                    "$ref": "#/$defs/relative_value"
-                },
-                "initial_wildlife": {
-                    "$ref": "#/$defs/relative_value"
-                },
-                "initial_forest": {
-                    "$ref": "#/$defs/relative_value"
-                },
-                "start": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "climate": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-                "temperature",
-                "rainfall"
-            ],
-            "properties": {
-                "temperature": {
-                    "$ref": "#/$defs/relative_value"
-                },
-                "rainfall": {
-                    "$ref": "#/$defs/relative_value"
-                }
-            }
-        },
-        "relative_value": {
-            "type": "number",
-            "description": "0=low,100=high",
-            "minimum": 0.0,
-            "maximum": 100.0
-        },
-        "facility_enum": {
-            "type": "string",
-            "enum": [
-                "農場",
-                "伐採場",
-                "鉱山",
-                "油田",
-                "港",
-                "道路",
-                "大学",
-                "天文台",
-                "工房",
-                "工場",
-                "塔",
-                "灯台",
-                "防衛陣地"
-            ]
-        },
-        "unit_enum": {
-            "type": "string",
-            "enum": [
-                "開拓者",
-                "労働者",
-                "輸送隊",
-                "研究者",
-                "職人",
-                "探検隊",
-                "歩兵",
-                "騎兵",
-                "商船",
-                "軍船"
-            ]
-        },
-        "terrain_enum": {
-            "type": "string",
-            "enum": [
-                "plane",
-                "hill",
-                "mountain",
-                "sea",
-                "coast",
-                "lowland_river"
-            ]
         }
     }
 }

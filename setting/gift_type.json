@@ -1,0 +1,546 @@
+{
+    "basic.stone": {
+        "name": "石材",
+        "tech": 0,
+        "yield": {
+            "material": 1
+        },
+        "bonus": [
+            {
+                "name": "石塁",
+                "target": {
+                    "entity": "base",
+                    "field": "max_wall_strength"
+                },
+                "effect_per_level": 1,
+                "max_level": 3
+            }
+        ],
+        "development": {
+            "*.mountain": {
+                "labor": {
+                    "operator": "+",
+                    "value1": "${setting:ficility_type_dict:basic.road:development:?:labor}",
+                    "value2": 1
+                },
+                "supply": "${setting:ficility_type_dict:basic.road:development:?:supply}"
+            }
+        }
+    },
+    "basic.precious_metal": {
+        "name": "貴金属",
+        "tech": 0,
+        "yield": {
+            "money": 1
+        },
+        "development": {
+            "*.mountain": {
+                "labor": {
+                    "operator": "+",
+                    "value1": "${setting:ficility_type_dict:basic.road:development:?:labor}",
+                    "value2": 1
+                },
+                "supply": "${setting:ficility_type_dict:basic.road:development:?:supply}"
+            }
+        }
+    },
+    "basic.iron": {
+        "name": "鉄",
+        "tech": 1,
+        "yield": {
+            "material": 1
+        },
+        "bonus": [
+            {
+                "name": "重装",
+                "target": {
+                    "entity": "unit",
+                    "field": "armament_bonus",
+                    "filter": [
+                        {
+                            "value1": "${#:is_soldier}",
+                            "value2": true,
+                            "operator": "=="
+                        }
+                    ]
+                },
+                "effect_per_level": 0.2,
+                "max_level": 3
+            },
+            {
+                "name": "鉄鍬",
+                "target": "#facility:yield_food",
+                "target_conditions": [
+                    {
+                        "value1": "#facility:function",
+                        "value2": "agriculture",
+                        "operator": "=="
+                    }
+                ],
+                "effect_per_level": "20%",
+                "max_level": 5
+            },
+            {
+                "name": "鉄斧",
+                "target": {
+                    "entity": "facility",
+                    "field": "#facility:yield_material",
+                    "filter": [
+                        {
+                            "value1": "${#:function}",
+                            "value2": "forestry",
+                            "operator": "=="
+                        }
+                    ]
+                },
+                "effect_per_level": "20%",
+                "max_level": 5
+            },
+            {
+                "name": "加工具",
+                "target": {
+                    "entity": "facility",
+                    "field": ":yield_production",
+                    "filter": [
+                        {
+                            "value1": "${#:function}",
+                            "value2": "manufacturing",
+                            "operator": "=="
+                        }
+                    ]
+                },
+                "effect_per_level": "20%",
+                "max_level": 5
+            }
+        ],
+        "level_cap": {
+            "count": {
+                "entity": "facility",
+                "filter": [
+                    {
+                        "value1": "${#:function}",
+                        "value2": "manufacturing",
+                        "operator": "=="
+                    }
+                ]
+            }
+        },
+        "development": {
+            "*.mountain|*.hill": {
+                "labor": {
+                    "operator": "+",
+                    "value1": "${setting:ficility_type_dict:basic.road:development:?:labor}",
+                    "value2": 1
+                },
+                "supply": "${setting:ficility_type_dict:basic.road:development:?:supply}"
+            }
+        }
+    },
+    "basic.sulfur": {
+        "name": "硫黄",
+        "tech": 2,
+        "yield": {
+            "material": 1
+        },
+        "bonus": [
+            {
+                "name": "火器",
+                "target": {
+                    "entity": "unit",
+                    "field": "armament_bonus",
+                    "filter": [
+                        {
+                            "value1": "${#:is_soldier}",
+                            "value2": true,
+                            "operator": "=="
+                        }
+                    ]
+                },
+                "effect_per_level": 0.4,
+                "max_level": 3
+            }
+        ],
+        "level_cap": {
+            "count": {
+                "entity": "facility",
+                "filter": [
+                    {
+                        "value1": "${#:function}",
+                        "value2": "manufacturing",
+                        "operator": "=="
+                    }
+                ]
+            }
+        },
+        "development": {
+            "*.mountain": {
+                "labor": {
+                    "operator": "+",
+                    "value1": "${setting:ficility_type_dict:basic.road:development:?:labor}",
+                    "value2": 1
+                },
+                "supply": "${setting:ficility_type_dict:basic.road:development:?:supply}"
+            }
+        }
+    },
+    "basic.coal": {
+        "name": "石炭",
+        "tech": 3,
+        "yield": {
+            "material": 1
+        },
+        "bonus": [
+            {
+                "name": "戦艦",
+                "target": {
+                    "entity": "#unit",
+                    "field": "armament_bonus",
+                    "filter": [
+                        {
+                            "value1": "${#:territory}",
+                            "value2": "water",
+                            "operator": "=="
+                        },
+                        {
+                            "value1": "${#:is_soldier}",
+                            "value2": true,
+                            "operator": "=="
+                        }
+                    ]
+                },
+                "effect_per_level": 0.8,
+                "max_level": 3
+            },
+            {
+                "name": "肥料",
+                "target": {
+                    "entity": "facility",
+                    "field": "yield_food",
+                    "filter": [
+                        {
+                            "value1": "${#:function}",
+                            "value2": "agriculture",
+                            "operator": "=="
+                        }
+                    ]
+                },
+                "effect_per_level": "40%",
+                "max_level": 5
+            },
+            {
+                "name": "大型漁船",
+                "target": {
+                    "entity": "facility",
+                    "field": "yield_food",
+                    "filter": [
+                        {
+                            "value1": "${#:function}",
+                            "value2": "fisheries",
+                            "operator": "=="
+                        },
+                        {
+                            "value1": "${#:tech}",
+                            "value2": 1,
+                            "operator": ">="
+                        }
+                    ]
+                },
+                "effect_per_level": "40%",
+                "max_level": 5
+            },
+            {
+                "name": "機械化",
+                "target": {
+                    "entity": "facility",
+                    "field": "yield_production",
+                    "filter": [
+                        {
+                            "value1": "${#:function}",
+                            "value2": "manufacturing",
+                            "operator": "=="
+                        },
+                        {
+                            "value1": "${#:tech}",
+                            "value2": 3,
+                            "operator": ">="
+                        }
+                    ]
+                },
+                "effect_per_level": "20%",
+                "max_level": 5
+            }
+        ],
+        "level_cap": {
+            "count": {
+                "entity": "facility",
+                "filter": [
+                    {
+                        "value1": "${#:function}",
+                        "value2": "manufacturing",
+                        "operator": "=="
+                    },
+                    {
+                        "value1": "${#:tech}",
+                        "value2": 3,
+                        "operator": ">="
+                    }
+                ]
+            }
+        },
+        "development": {
+            "*.mountain|*.hill|*.plane": {
+                "labor": {
+                    "operator": "+",
+                    "value1": "${setting:ficility_type_dict:basic.road:development:?:labor}",
+                    "value2": 1
+                },
+                "supply": "${setting:ficility_type_dict:basic.road:development:?:supply}"
+            }
+        }
+    },
+    "basic.petroleum": {
+        "name": "石油",
+        "tech": 4,
+        "yield": {
+            "material": 1
+        },
+        "bonus": [
+            {
+                "name": "輸送車",
+                "target": {
+                    "entity": "unit",
+                    "field": ":move",
+                    "filter": [
+                        {
+                            "value1": "${#:territory}",
+                            "value2": "land",
+                            "operator": "=="
+                        },
+                        {
+                            "value1": "${#:move_type_id}",
+                            "value2": "*.carter",
+                            "operator": "=="
+                        }
+                    ]
+                },
+                "effect_per_level": 1,
+                "max_level": 1
+            },
+            {
+                "name": "農薬",
+                "target": {
+                    "entity": "facility",
+                    "field": "yield_food",
+                    "filter": [
+                        {
+                            "value1": "${#:function}",
+                            "value2": "agriculture",
+                            "operator": "=="
+                        }
+                    ]
+                },
+                "effect_per_level": "80%",
+                "max_level": 5
+            },
+            {
+                "name": "高速漁船",
+                "target": {
+                    "entity": "facility",
+                    "field": "yield_food",
+                    "filter": [
+                        {
+                            "value1": "${#:function}",
+                            "value2": "fisheries",
+                            "operator": "=="
+                        },
+                        {
+                            "value1": "${#:tech}",
+                            "value2": 1,
+                            "operator": ">="
+                        }
+                    ]
+                },
+                "effect_per_level": "80%",
+                "max_level": 5
+            },
+            {
+                "name": "内燃機関",
+                "target": {
+                    "entity": "facility",
+                    "field": "yield_production",
+                    "filter": [
+                        {
+                            "value1": "${#:function}",
+                            "value2": "manufacturing",
+                            "operator": "=="
+                        },
+                        {
+                            "value1": "${#:tech}",
+                            "value2": 4,
+                            "operator": ">="
+                        }
+                    ]
+                },
+                "effect_per_level": "20%",
+                "max_level": 5
+            }
+        ],
+        "level_cap": {
+            "count": {
+                "entity": "facility",
+                "filter": [
+                    {
+                        "value1": "${#:function}",
+                        "value2": "manufacturing",
+                        "operator": "=="
+                    },
+                    {
+                        "value1": "${#:tech}",
+                        "value2": 4,
+                        "operator": ">="
+                    }
+                ]
+            }
+        },
+        "development": {
+            "*.plane": {
+                "labor": {
+                    "operator": "+",
+                    "value1": "${setting:ficility_type_dict:basic.road:development:*.plane:labor}",
+                    "value2": 4
+                },
+                "supply": {
+                    "operator": "+",
+                    "value1": "${setting:ficility_type_dict:basic.road:development:*.plane:supply}",
+                    "value2": 5
+                }
+            },
+            "*.coast": {
+                "labor": 10,
+                "supply": 10
+            },
+            "*.sea": {
+                "labor": 15,
+                "supply": 15
+            }
+        }
+    },
+    "basic.rare_metal": {
+        "name": "レアメタル",
+        "tech": 5,
+        "yield": {
+            "material": 1
+        },
+        "bonus": [
+            {
+                "name": "強化素材",
+                "target": {
+                    "entity": "unit",
+                    "field": "armament_bonus",
+                    "filter": [
+                        {
+                            "value1": "${#:territory}",
+                            "value2": "land",
+                            "operator": "=="
+                        },
+                        {
+                            "value1": "${#:is_soldier}",
+                            "value2": true,
+                            "operator": "=="
+                        }
+                    ]
+                },
+                "effect_per_level": 0.6,
+                "max_level": 3
+            },
+            {
+                "name": "高機能材料",
+                "target": {
+                    "entity": "facility",
+                    "field": "yield_production",
+                    "filter": [
+                        {
+                            "value1": "${#:function}",
+                            "value2": "manufacturing",
+                            "operator": "=="
+                        },
+                        {
+                            "value1": "${#:tech}",
+                            "value2": 3,
+                            "operator": ">="
+                        }
+                    ]
+                },
+                "effect_per_level": "40%",
+                "max_level": 5
+            }
+        ],
+        "level_cap": {
+            "value1": {
+                "count": {
+                    "entity": "facility",
+                    "filter": [
+                        {
+                            "value1": "${#:function}",
+                            "value2": "manufacturing",
+                            "operator": "=="
+                        },
+                        {
+                            "value1": "${#:tech}",
+                            "value2": 3,
+                            "operator": ">="
+                        }
+                    ]
+                }
+            },
+            "value2": 2,
+            "operator": "*"
+        },
+        "development": {
+            "*.mountain": {
+                "labor": {
+                    "operator": "+",
+                    "value1": "${setting:ficility_type_dict:basic.road:development:?:labor}",
+                    "value2": 1
+                },
+                "supply": "${setting:ficility_type_dict:basic.road:development:?:supply}"
+            }
+        }
+    },
+    "basic.salt": {
+        "name": "塩",
+        "tech": 0,
+        "yield": {
+            "food": 1
+        },
+        "bonus": [
+            {
+                "name": "豊かさ",
+                "target": {
+                    "entity": "base",
+                    "field": "loyalty"
+                },
+                "effect_per_level": 0.1,
+                "max_level": 1
+            }
+        ],
+        "development": {
+            "*.coast": {
+                "labor": "${setting:ficility_type_dict:basic.farm:development:basic.plane:labor}",
+                "supply": "${setting:ficility_type_dict:basic.farm:development:basic.plane:supply}"
+            }
+        }
+    }
+|資源|地形|気温条件|降水量条件|活用技術レベル|産出|拠点ボーナス|ボーナス条件|
+|--|--|--|--|--|--|--|--|
+|塩|沿岸|最高気温が50以上|降水量が35以下|0|食糧1|全拠点の忠誠心+0.1|レベルごとに1個の商業施設が必要|
+|砂糖|平野・丘陵|平均気温が50以上|降水量が35以上|0|食糧1|全拠点の忠誠心+0.1|レベルごとに1個の商業施設が必要|
+|香辛料|平野・丘陵|平均気温が75以上|降水量が50以上|0|食糧1|全拠点の忠誠心+0.1|レベルごとに1個の商業施設が必要|
+|茶|丘陵・山|平均気温が50以上,75以下|降水量が35以上50以下|0|食糧1|全拠点の忠誠心+0.1|レベルごとに1個の商業施設が必要|
+|コーヒー|丘陵・山|最低気温が50以上,最高気温が75以下|降水量が35以上50以下|0|食糧1|全拠点の忠誠心+0.1|レベルごとに1個の商業施設が必要|
+|ワイン|平野・丘陵・山|平均気温が50以上,75以下|降水量が30以上50以下|0|食糧1|全拠点の忠誠心+0.1|レベルごとに1個の商業施設が必要|
+|絹|平野・丘陵|平均気温が50以上,75以下|降水量が50以上|0|材料1|全拠点の忠誠心+0.1|レベルごとに1個の商業施設が必要|
+|綿花|平野・丘陵|平均気温が50以上|降水量が50以上|0|材料1|全拠点の忠誠心+0.1|レベルごとに1個の商業施設が必要|
+|ゴム|平野・丘陵|平均気温が75以上|降水量が50以上|3|材料1|全拠点の忠誠心+0.1|レベルごとに1個の商業施設が必要|
+
+}

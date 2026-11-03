@@ -1,0 +1,192 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "PrgBattle Spec Validation",
+    "type": "object",
+    "$defs": {
+        "development_dict":{
+            "type": "array",
+            "description": "地形タイプIDクエリをキーとする辞書",
+            "patternProperties": {
+                "^[A-Za-z0-9_\\-\\.\\*\\|]+$": {
+                    "$ref": "#/$defs/development"
+                }
+            }
+        },
+        "development": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "labor",
+                "supply"
+            ],
+            "properties": {
+                "labor": {
+                    "$ref": "#/$defs/number_or_ref_or_calc"
+                },
+                "supply": {
+                    "$ref": "#/$defs/number_or_ref_or_calc"
+                }
+            }
+        },
+        "number_or_ref_or_calc": {
+            "oneOf": [
+                {
+                    "type": [
+                        "number",
+                        "string"
+                    ]
+                },
+                {
+                    "$ref": "#/$defs/calc"
+                }
+            ]
+        },
+        "ref_or_calc_or_function": {
+            "oneOf": [
+                {
+                    "type": "string"
+                },
+                {
+                    "$ref": "#/$defs/calc"
+                },
+                {
+                    "$ref": "#/$defs/function"
+                }
+            ]
+        },
+        "condition": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "value1",
+                "value2",
+                "operator"
+            ],
+            "properties": {
+                "value1": {
+                    "type": [
+                        "string",
+                        "boolean",
+                        "integer",
+                        "number"
+                    ]
+                },
+                "value2": {
+                    "type": [
+                        "string",
+                        "boolean",
+                        "integer",
+                        "number"
+                    ]
+                },
+                "operator": {
+                    "type": "string",
+                    "enum": [
+                        ">=",
+                        "<=",
+                        ">",
+                        "<",
+                        "==",
+                        "!="
+                    ]
+                }
+            }
+        },
+        "target": {
+            "type": "object",
+            "description": "書き換える対象となる従属プロパティ",
+            "required": [
+                "entity",
+                "field"
+            ],
+            "additionalProperties": false,
+            "properties": {
+                "entity": {
+                    "type": "string",
+                    "enum": [
+                        "unit",
+                        "facility",
+                        "base",
+                        "country"
+                    ]
+                },
+                "field": {
+                    "type": "string"
+                },
+                "filter": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "schema_common.json#/$defs/condition"
+                    }
+                }
+            }
+        },
+        "calc": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "value1",
+                "value2",
+                "operator"
+            ],
+            "properties": {
+                "value1": {
+                    "$ref": "#/$defs/number_or_ref_or_calc"
+                },
+                "value2": {
+                    "$ref": "#/$defs/number_or_ref_or_calc"
+                },
+                "operator": {
+                    "type": "string",
+                    "enum": [
+                        "+",
+                        "-",
+                        "*",
+                        "/"
+                    ]
+                }
+            }
+        },
+        "function": {
+            "oneOf": [
+                {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                        "count"
+                    ],
+                    "properties": {
+                        "count": {
+                            "$ref": "#/$defs/function_count_args"
+                        }
+                    }
+                }
+            ]
+        },
+        "function_count_args": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "entity",
+                "filter"
+            ],
+            "properties": {
+                "entity": {
+                    "type": "string",
+                    "enum": [
+                        "unit",
+                        "facility",
+                        "base",
+                        "country"
+                    ]
+                },
+                "filter": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "schema_common.json#/$defs/condition"
+                    }
+                }
+            }
+        }
+    }
+}

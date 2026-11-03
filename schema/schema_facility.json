@@ -1,0 +1,195 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "PrgBattle Spec Validation",
+    "type": "object",
+    "$defs": {
+        "facility_info": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "static",
+                "pop_turn",
+                "lost_turn",
+                "snapshots"
+            ],
+            "properties": {
+                "static": {
+                    "$ref": "#/$defs/facility_static"
+                },
+                "pop_turn": {
+                    "type": "integer",
+                    "description": "施設が出現したターン"
+                },
+                "lost_turn": {
+                    "type": "integer",
+                    "description": "施設が消えたターン"
+                },
+                "snapshots": {
+                    "type": "array",
+                    "description": "存在ターン数(lost_turn-pop_turn)個の要素を持つ配列。出現したターン内に消えた場合は要素数0",
+                    "items": {
+                        "$ref": "#/$defs/facility_snapshot"
+                    }
+                }
+            }
+        },
+        "facility_static": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "position",
+                "facility_type_id"
+            ],
+            "properties": {
+                "position": {
+                    "type": "integer",
+                    "description": "位置：x+y*widthの値",
+                    "minimum": 0
+                },
+                "facility_type_id": {
+                    "type": "string",
+                    "description": "施設タイプID"
+                }
+            }
+        },
+        "facility_snapshot": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "country_id"
+            ],
+            "properties": {
+                "country_id": {
+                    "type": "string",
+                    "description": "ターン終了時の所有国の国ID"
+                }
+            }
+        },
+        "facility_type_dict": {
+            "type": "object",
+            "description": "ゲームで使用する施設タイプの辞書。施設タイプIDをキーとする",
+            "patternProperties": {
+                "^[A-Za-z0-9_\\-\\.]+$": {
+                    "$ref": "#/$defs/facility_type"
+                }
+            }
+        },
+        "facility_type": {
+            "type": "object",
+            "additionalProperties": false,
+            "oneOf": [
+                {
+                    "required": [
+                        "name",
+                        "kind",
+                        "function_id",
+                        "tech",
+                        "development",
+                        "yield"
+                    ]
+                },
+                {
+                    "required": [
+                        "name",
+                        "kind",
+                        "function_id",
+                        "tech",
+                        "depend_on_resource"
+                    ]
+                }
+            ],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "施設タイプ名"
+                },
+                "kind": {
+                    "type": "string",
+                    "enum": [
+                        "workplace",
+                        "utility",
+                        "mobility"
+                    ]
+                },
+                "function_id": {
+                    "type": "string",
+                    "enum": [
+                        "agriculture",
+                        "forestry",
+                        "fisheries",
+                        "mining",
+                        "research",
+                        "manufacturing",
+                        "surveillance",
+                        "militaly",
+                        "stevedoring",
+                        "transportation"
+                    ]
+                },
+                "tech": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "can_develop_on_forest": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": [
+                            "sparse",
+                            "moderate",
+                            "dense"
+                        ]
+                    }
+                },
+                "development":{
+                    "$ref": "schema_common.json#/$defs/development_dict"
+                },
+                "yield":{
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "material": {
+                            "type": "number"
+                        },
+                        "money": {
+                            "type": "number"
+                        },
+                        "food": {
+                            "type": "number"
+                        },
+                        "science": {
+                            "type": "number"
+                        },
+                        "production": {
+                            "type": "number"
+                        }
+                    }
+                },
+                "depend_on_resource":{
+                    "type":"boolean",
+                    "description": "資源依存でdevelopmentとyieldが決まる場合true"
+                },
+                "need_forest":{
+                    "type":"boolean",
+                    "description": "yieldを得るのにforestが必要な場合true"
+                },
+                "enable_shipbuilding":{
+                    "type":"boolean",
+                    "description": "水上ユニットの作成機能を提供する場合true"
+                },
+                "enable_loading_ship":{
+                    "type":"boolean",
+                    "description": "水上ユニットへの荷役機能を提供する場合true"
+                },
+                "entry_cost_for_water_unit":{
+                    "type":"number",
+                    "description": "水上ユニットの進入コスト"
+                },
+                "entry_cost_for_land_unit":{
+                    "type":"number",
+                    "description": "陸上ユニットの進入コスト"
+                }
+            }
+        }
+    }
+}

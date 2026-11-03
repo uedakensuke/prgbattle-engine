@@ -1,0 +1,65 @@
+{
+    "basic.walk": {
+        "name": "歩行",
+        "terrain_cost": {
+            "*.plane": 1,
+            "*.hill": 1,
+            "*.mountain": 2,
+            "*.coast": 1,
+            "*.lowland_river": 3
+        },
+        "forest_cost": {
+            "*.sparse": 0,
+            "*.moderate": 1,
+            "*.dense": 2
+        }
+    },
+    "basic.horse": {
+        "name": "騎行",
+        "terrain_cost": {
+            "*.plane": 1,
+            "*.hill": 1,
+            "*.mountain": 6,
+            "*.coast": 2,
+            "*.lowland_river": 6
+        },
+        "forest_cost": {
+            "*.sparse": 0,
+            "*.moderate": 3
+        }
+    },
+    "baisc.carter": {
+        "name": "馬車",
+        "terrain_cost": {
+            "*.plane": 1,
+            "*.hill": 2,
+            "*.coast": 2
+        },
+        "forest_cost": {
+            "*.sparse": 0
+        }
+    },
+    "basic.tracked": {
+        "name": "機動",
+        "terrain_cost": {
+            "*.plane": 1,
+            "*.hill": 1,
+            "*.coast": 2
+        },
+        "forest_cost": {
+            "*.sparse": 0,
+            "*.moderate": 1
+        }
+    },
+    "basic.ship": {
+        "name": "船",
+        "terrain_cost": {
+            "*.coast": 3,
+            "*.lowland_river": 2,
+            "*.sea": 1
+        },
+        "forest_cost": {
+            "*.sparse": 0
+        }
+    }
+}

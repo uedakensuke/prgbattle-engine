@@ -1,0 +1,239 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "PrgBattle Spec Validation",
+    "type": "object",
+    "$defs": {
+        "country_info": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "static",
+                "pop_turn",
+                "lost_turn",
+                "snapshots",
+                "sight_layer_diff"
+            ],
+            "properties": {
+                "static": {
+                    "$ref": "#/$defs/country_static"
+                },
+                "pop_turn": {
+                    "type": "integer",
+                    "description": "国が出現したターン"
+                },
+                "lost_turn": {
+                    "type": "integer",
+                    "description": "国が消えたターン"
+                },
+                "snapshots": {
+                    "type": "array",
+                    "description": "存在ターン数(lost_turn-pop_turn)個の要素を持つ配列。出現したターン内に消えた場合は要素数0",
+                    "items": {
+                        "$ref": "#/$defs/country_snapshot"
+                    }
+                },
+                "sight_layer_diff": {
+                    "type": "array",
+                    "description": "存在ターン数(lost_turn-pop_turn)個の要素を持つ配列。ターン開始時に比べターン終了時に視野範囲内に加わったスペースはtrue。視野範囲内からはずれたスペースはfalse",
+                    "items": {
+                        "$ref": "#/$defs/boolean_layer_diff"
+                    }
+                }
+            }
+        },
+        "country_static": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "国名"
+                }
+            }
+        },
+        "country_snapshot": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "science",
+                "money",
+                "relation",
+                "score"
+            ],
+            "properties": {
+                "science": {
+                    "type": "number",
+                    "format": "decimal",
+                    "description": "ターン終了時の累積科学",
+                    "minimum": 0.0
+                },
+                "money": {
+                    "type": "number",
+                    "format": "decimal",
+                    "description": "ターン終了時の保有資金",
+                    "minimum": 0.0
+                },
+                "fame": {
+                    "type": "integer",
+                    "description": "ターン終了時の評判値",
+                    "minimum": -100,
+                    "maximum": 100
+                },
+                "relation": {
+                    "type": "object",
+                    "description": "国IDをキーとする国家関係値の辞書",
+                    "patternProperties": {
+                        "^[A-Za-z0-9_\\-\\.]+$": {
+                            "type": "integer",
+                            "description": "ターン終了時の関係値",
+                            "minimum": -100,
+                            "maximum": 100
+                        }
+                    }
+                },
+                "score": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                        "num_looked_sight",
+                        "num_last_walk",
+                        "num_facility"
+                    ],
+                    "properties": {
+                        "num_looked_sight": {
+                            "type": "integer",
+                            "description": "ターン終了時の目視済みマス数"
+                        },
+                        "num_last_walk": {
+                            "type": "integer",
+                            "description": "ターン終了時の最終訪問者マス数"
+                        },
+                        "num_base": {
+                            "type": "integer",
+                            "description": "ターン終了時の拠点数"
+                        },
+                        "num_facility": {
+                            "type": "integer",
+                            "description": "ターン終了時の施設数"
+                        },
+                        "population_base": {
+                            "type": "integer",
+                            "description": "ターン終了時の拠点総人口"
+                        },
+                        "population_unit": {
+                            "type": "integer",
+                            "description": "ターン終了時のユニット総人口"
+                        }
+                    }
+                }
+            }
+        },
+        "boolean_layer_diff": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "positions",
+                "values"
+            ],
+            "properties": {
+                "positions": {
+                    "type": "array",
+                    "description": "変化したマスの位置のリスト。要素数は変化したマス数",
+                    "items": {
+                        "type": "integer",
+                        "description": "位置：x+y*width"
+                    }
+                },
+                "values": {
+                    "type": "array",
+                    "description": "変化したマスの変化後の値のリスト。要素数は変化したマス数",
+                    "items": {
+                        "type": "boolean",
+                        "description": "変化後の値"
+                    }
+                }
+            }
+        },
+        "integer_layer_diff": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "positions",
+                "values"
+            ],
+            "properties": {
+                "positions": {
+                    "type": "array",
+                    "description": "変化したマスの位置のリスト。要素数は変化したマス数",
+                    "items": {
+                        "type": "integer",
+                        "description": "位置：x+y*width"
+                    }
+                },
+                "values": {
+                    "type": "array",
+                    "description": "変化したマスの変化後の値のリスト。要素数は変化したマス数",
+                    "items": {
+                        "type": "integer",
+                        "description": "変化後の値"
+                    }
+                }
+            }
+        },
+        "float_layer_diff": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "positions",
+                "values"
+            ],
+            "properties": {
+                "positions": {
+                    "type": "array",
+                    "description": "変化したマスの位置のリスト。要素数は変化したマス数",
+                    "items": {
+                        "type": "integer",
+                        "description": "位置：x+y*width"
+                    }
+                },
+                "values": {
+                    "type": "array",
+                    "description": "変化したマスの変化後の値のリスト。要素数は変化したマス数",
+                    "items": {
+                        "type": "number",
+                        "description": "変化後の値"
+                    }
+                }
+            }
+        },
+        "string_layer_diff": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "positions",
+                "values"
+            ],
+            "properties": {
+                "positions": {
+                    "type": "array",
+                    "description": "変化したマスの位置のリスト。要素数は変化したマス数",
+                    "items": {
+                        "type": "integer",
+                        "description": "位置：x+y*width"
+                    }
+                },
+                "values": {
+                    "type": "array",
+                    "description": "変化したマスの変化後の値のリスト。要素数は変化したマス数",
+                    "items": {
+                        "type": "string",
+                        "description": "変化後の値"
+                    }
+                }
+            }
+        }
+     }
+}

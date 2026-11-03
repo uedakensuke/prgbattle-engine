@@ -1,0 +1,227 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "PrgBattle Spec Validation",
+    "type": "object",
+    "$defs": {
+        "unit_info": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "static",
+                "pop_turn",
+                "lost_turn",
+                "snapshots"
+            ],
+            "properties": {
+                "static": {
+                    "$ref": "#/$defs/unit_static"
+                },
+                "pop_turn": {
+                    "type": "integer",
+                    "description": "ユニットが出現したターン"
+                },
+                "lost_turn": {
+                    "type": "integer",
+                    "description": "ユニットが消えたターン"
+                },
+                "snapshots": {
+                    "type": "array",
+                    "description": "存在ターン数(lost_turn-pop_turn)個の要素を持つ配列。出現したターン内に消えた場合は要素数0",
+                    "items": {
+                        "$ref": "#/$defs/unit_snapshot"
+                    }
+                }
+            }
+        },
+        "unit_static": {
+            "type": "object",
+            "description": "ゲーム中で一定のユニット情報",
+            "additionalProperties": false,
+            "required": [
+                "type_id",
+                "country_id"
+            ],
+            "properties": {
+                "unit_type_id": {
+                    "type": "string",
+                    "description": "ユニットタイプID"
+                },
+                "country_id": {
+                    "type": "string",
+                    "description": "所属する国ID"
+                }
+            }
+        },
+        "unit_snapshot": {
+            "type": "object",
+            "description": "ゲーム中で時刻と共に変わるユニット情報。ターン終了時の値",
+            "additionalProperties": false,
+            "required": [
+                "position",
+                "goal_id",
+                "move_position",
+                "move_point",
+                "population",
+                "food",
+                "supply",
+                "material",
+                "hunger_point",
+                "on_board",
+                "loyalty"
+            ],
+            "properties": {
+                "position": {
+                    "type": "integer",
+                    "description": "ターン終了時の現在位置：x+y*widthの値",
+                    "minimum": 0
+                },
+                "goal_id": {
+                    "type": "string",
+                    "description": "ターン終了時の目標地点ID"
+                },
+                "move_position": {
+                    "type": "integer",
+                    "description": "ターン終了時の移動目標位置：x+y*widthの値。現在位置に隣接",
+                    "minimum": 0
+                },
+                "move_point": {
+                    "type": "integer",
+                    "description": "ターン終了時の移動ポイント",
+                    "minimum": 0
+                },
+                "population": {
+                    "type": "number",
+                    "format": "decimal",
+                    "description": "ターン終了時のユニット人口",
+                    "minimum": 0.01
+                },
+                "food": {
+                    "type": "number",
+                    "description": "ターン終了時の携行食糧",
+                    "minimum": 0.0
+                },
+                "supply": {
+                    "type": "number",
+                    "description": "ターン終了時の携行物資",
+                    "minimum": 0.0
+                },
+                "material": {
+                    "type": "number",
+                    "description": "ターン終了時の携行材料",
+                    "minimum": 0.0
+                },
+                "hunger_point": {
+                    "type": "number",
+                    "description": "ターン終了時の飢餓ポイント",
+                    "minimum": 0.0,
+                    "maximum": 20.0
+                },
+                "on_board": {
+                    "type": "boolean",
+                    "description": "ターン終了時の乗船状態。陸上ユニットの場合は乗船しているかどうか。水上ユニットの場合は乗船されているかどうか"
+                },
+                "loyalty": {
+                    "type": "object",
+                    "description": "ターン終了時の各国への忠誠度の辞書。国IDをキーとする",
+                    "patternProperties": {
+                        "^[A-Za-z0-9_\\-\\.]+$": {
+                            "type": "number",
+                            "description": "ターン終了時の忠誠心",
+                            "maximum": 100,
+                            "minimum": -100
+                        }
+                    }
+                }
+            }
+        },
+        "unit_type_dict": {
+            "type": "object",
+            "description": "ゲームで使用するユニットタイプの辞書。ユニットタイプIDをキーとする",
+            "patternProperties": {
+                "^[A-Za-z0-9_\\-\\.]+$": {
+                    "$ref": "#/$defs/unit_type"
+                }
+            }
+        },
+        "unit_type": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "name",
+                "is_soldier",
+                "territory",
+                "max_recruit_ratio",
+                "max_food",
+                "max_supply",
+                "max_material",
+                "armament",
+                "basic_morale",
+                "basic_sight",
+                "basic_move",
+                "move_type_id"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "ユニットタイプ名"
+                },
+                "is_soldier": {
+                    "type": "boolean",
+                    "description": "軍事ユニットの場合true,民間ユニットの場合false"
+                },
+                "territory": {
+                    "type": "string",
+                    "enum": [
+                        "land",
+                        "water"
+                    ]
+                },
+                "max_recruit_ratio": {
+                    "type": "number",
+                    "description": "一度のユニット生成で可能なユニット人口の最大値を拠点人口に対する割合で表す",
+                    "maximum": 1.0,
+                    "minimum": 0.0
+                },
+                "max_food": {
+                    "type": "number",
+                    "description": "最大携行食糧",
+                    "minimum": 0.0
+                },
+                "max_supply": {
+                    "type": "number",
+                    "description": "最大携行物資",
+                    "minimum": 0.0
+                },
+                "max_material": {
+                    "type": "number",
+                    "description": "最大携行材料",
+                    "minimum": 0.0
+                },
+                "armament": {
+                    "type": "integer",
+                    "description": "基準戦力倍率",
+                    "minimum": 0
+                },
+                "armament_on_board": {
+                    "type": "integer",
+                    "description": "乗船中基準戦力倍率補正。省略した場合0",
+                    "minimum": 0
+                },
+                "basic_sight": {
+                    "type": "number",
+                    "description": "基準視界",
+                    "minimum": 0
+                },
+                "basic_move": {
+                    "type": "number",
+                    "description": "基準移動力",
+                    "minimum": 0
+                },
+                "move_type_id": {
+                    "type": "string",
+                    "description": "移動タイプID"
+                }
+            }
+        }
+    }
+}

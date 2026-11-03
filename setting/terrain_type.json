@@ -1,0 +1,59 @@
+{
+    "basic.plane": {
+        "name": "平地",
+        "base_capable": true,
+        "forest_capable": true,
+        "occurusion": 0,
+        "defence": {
+            "land": 0
+        }
+    },
+    "basic.hill": {
+        "name": "丘陵",
+        "base_capable": true,
+        "forest_capable": true,
+        "occurusion": 1,
+        "defence": {
+            "land": 0.5
+        }
+    },
+    "basic.mountain": {
+        "name": "山",
+        "base_capable": true,
+        "forest_capable": true,
+        "occurusion": 2,
+        "defence": {
+            "land": 1
+        }
+    },
+    "basic.sea": {
+        "name": "海/湖",
+        "base_capable": false,
+        "forest_capable": false,
+        "occurusion": 0,
+        "defence": {
+            "water": 0
+        }
+    },
+    "basic.coast": {
+        "name": "沿岸",
+        "base_capable": false,
+        "forest_capable": false,
+        "river_capable": false,
+        "occurusion": 0,
+        "defence": {
+            "land": 0,
+            "water": 0
+        }
+    },
+    "basic.lowland_river": {
+        "name": "航行可能な河川",
+        "base_capable": false,
+        "forest_capable": false,
+        "occurusion": 0,
+        "defence": {
+            "land": -0.5,
+            "water": 0
+        }
+    }
+}

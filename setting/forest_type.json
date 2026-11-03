@@ -1,0 +1,26 @@
+{
+    "basic.sparse": {
+        "name": "疎林",
+        "base_capable": true,
+        "occurusion": 0,
+        "defence": {
+            "land": 0
+        }
+    },
+    "basic.moderate": {
+        "name": "森",
+        "base_capable": false,
+        "occurusion": 1,
+        "defence": {
+            "land": 0.2
+        }
+    },
+    "basic.dense": {
+        "name": "密林",
+        "base_capable": false,
+        "occurusion": 2,
+        "defence": {
+            "land": 0.5
+        }
+    }
+}

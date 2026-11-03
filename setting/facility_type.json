@@ -1,0 +1,433 @@
+{
+    "basic.farm": {
+        "name": "農場",
+        "kind": "workplace",
+        "function_id": "agriculture",
+        "tech": 0,
+        "can_develop_on_forest": [
+            "sparse"
+        ],
+        "development": {
+            "*.mountain|*.hill|*.plane": {
+                "labor": {
+                    "operator": "+",
+                    "value1": "${setting:ficility_type_dict:basic.road:development:?:labor}",
+                    "value2": 1
+                },
+                "supply": "${setting:ficility_type_dict:basic.road:development:?:supply}"
+            }
+        },
+        "yield": {
+            "food": 1
+        }
+    },
+    "basic.camp": {
+        "name": "伐採場",
+        "kind": "workplace",
+        "function_id": "forestry",
+        "tech": 0,
+        "can_develop_on_forest": [
+            "sparse",
+            "moderate",
+            "dense"
+        ],
+        "development": {
+            "*.mountain|*.hill|*.plane": {
+                "labor": {
+                    "operator": "+",
+                    "value1": "${setting:ficility_type_dict:basic.road:development:?:labor}",
+                    "value2": 1
+                },
+                "supply": "${setting:ficility_type_dict:basic.road:development:?:supply}"
+            }
+        },
+        "yield": {
+            "material": 1
+        },
+        "need_forest": true
+    },
+    "basic.fishing_area": {
+        "name": "漁場",
+        "kind": "workplace",
+        "function_id": "fisheries",
+        "tech": 0,
+        "can_develop_on_forest": [
+            "sparse"
+        ],
+        "development": {
+            "*.coast|*.lowland_river": {
+                "labor": 2,
+                "supply": 0
+            }
+        },
+        "yield": {
+            "food": 1
+        }
+    },
+    "basic.offshore_fishing_area": {
+        "name": "遠洋漁場",
+        "kind": "workplace",
+        "function_id": "fisheries",
+        "tech": 1,
+        "development": {
+            "*.sea": {
+                "labor": 2,
+                "supply": 0
+            }
+        },
+        "yield": {
+            "food": 2
+        }
+    },
+    "basic.mine": {
+        "name": "鉱山",
+        "kind": "workplace",
+        "function_id": "mining",
+        "tech": 0,
+        "can_develop_on_forest": [
+            "sparse"
+        ],
+        "depend_on_resource": true
+    },
+    "basic.library": {
+        "name": "図書館",
+        "kind": "workplace",
+        "function_id": "research",
+        "tech": 0,
+        "can_develop_on_forest": [
+            "sparse"
+        ],
+        "development": {
+            "*.hill|*.plane": {
+                "labor": {
+                    "operator": "+",
+                    "value1": "${setting:ficility_type_dict:basic.road:development:?:labor}",
+                    "value2": 1
+                },
+                "supply": {
+                    "operator": "+",
+                    "value1": "${setting:ficility_type_dict:basic.road:development:?:supply}",
+                    "value2": 5
+                }
+            }
+        },
+        "yield": {
+            "science": 1
+        }
+    },
+    "basic.academy": {
+        "name": "大学",
+        "kind": "workplace",
+        "function_id": "research",
+        "tech": 1,
+        "can_develop_on_forest": [
+            "sparse"
+        ],
+        "development": {
+            "*.hill|*.plane": {
+                "labor": {
+                    "operator": "+",
+                    "value1": "${setting:ficility_type_dict:basic.road:development:?:labor}",
+                    "value2": 2
+                },
+                "supply": {
+                    "operator": "+",
+                    "value1": "${setting:ficility_type_dict:basic.road:development:?:supply}",
+                    "value2": 10
+                }
+            }
+        },
+        "yield": {
+            "science": 3
+        }
+    },
+    "basic.observatory": {
+        "name": "天文台",
+        "kind": "workplace",
+        "function_id": "research",
+        "tech": 2,
+        "can_develop_on_forest": [
+            "sparse"
+        ],
+        "development": {
+            "*.mountain": {
+                "labor": {
+                    "operator": "+",
+                    "value1": "${setting:ficility_type_dict:basic.road:development:?:labor}",
+                    "value2": 3
+                },
+                "supply": {
+                    "operator": "+",
+                    "value1": "${setting:ficility_type_dict:basic.road:development:?:supply}",
+                    "value2": 15
+                }
+            }
+        },
+        "yield": {
+            "science": 5
+        }
+    },
+    "basic.workshop": {
+        "name": "工房",
+        "kind": "workplace",
+        "function_id": "manufacturing",
+        "tech": 0,
+        "can_develop_on_forest": [
+            "sparse"
+        ],
+        "development": {
+            "*.mountain|*.hill|*.plane": {
+                "labor": {
+                    "operator": "+",
+                    "value1": "${setting:ficility_type_dict:basic.road:development:?:labor}",
+                    "value2": 3
+                },
+                "supply": "${setting:ficility_type_dict:basic.road:development:?:supply}"
+            }
+        },
+        "yield": {
+            "production": 1
+        }
+    },
+    "basic.dock": {
+        "name": "造船所",
+        "kind": "workplace",
+        "function_id": "manufacturing",
+        "tech": 1,
+        "can_develop_on_forest": [
+            "sparse"
+        ],
+        "development": {
+            "*.coast|*.lowland_river": {
+                "labor": 4,
+                "supply": 10
+            }
+        },
+        "yield": {
+            "production": 1
+        },
+        "enable_shipbuilding": true
+    },
+    "basic.factory": {
+        "name": "工場",
+        "kind": "workplace",
+        "function_id": "manufacturing",
+        "tech": 3,
+        "can_develop_on_forest": [
+            "sparse"
+        ],
+        "development": {
+            "*.hill|*.plane": {
+                "labor": {
+                    "operator": "+",
+                    "value1": "${setting:ficility_type_dict:basic.road:development:?:labor}",
+                    "value2": 7
+                },
+                "supply": {
+                    "operator": "+",
+                    "value1": "${setting:ficility_type_dict:basic.road:development:?:supply}",
+                    "value2": 20
+                }
+            }
+        },
+        "yield": {
+            "production": 4
+        }
+    },
+    "basic.plant": {
+        "name": "プラント",
+        "kind": "workplace",
+        "function_id": "manufacturing",
+        "tech": 4,
+        "can_develop_on_forest": [
+            "sparse"
+        ],
+        "development": {
+            "*.coast|*.lowland_river": {
+                "labor": {
+                    "operator": "+",
+                    "value1": "${setting:ficility_type_dict:basic.road:development:?:labor}",
+                    "value2": 30
+                },
+                "supply": {
+                    "operator": "+",
+                    "value1": "${setting:ficility_type_dict:basic.road:development:?:supply}",
+                    "value2": 50
+                }
+            }
+        },
+        "yield": {
+            "production": 10
+        },
+        "enable_shipbuilding": true
+    },
+    "basic.market": {
+        "name": "市場",
+        "kind": "workplace",
+        "function_id": "commerce",
+        "tech": 0,
+        "can_develop_on_forest": [
+            "sparse"
+        ],
+        "development": {
+            "*.hill|*.plane": {
+                "labor": {
+                    "operator": "+",
+                    "value1": "${setting:ficility_type_dict:basic.road:development:?:labor}",
+                    "value2": 1
+                },
+                "supply": {
+                    "operator": "+",
+                    "value1": "${setting:ficility_type_dict:basic.road:development:?:supply}",
+                    "value2": 5
+                }
+            }
+        },
+        "yield": {
+            "money": 1
+        }
+    },
+    "basic.store": {
+        "name": "商会",
+        "kind": "workplace",
+        "function_id": "commerce",
+        "tech": 2,
+        "can_develop_on_forest": [
+            "sparse"
+        ],
+        "development": {
+            "*.hill|*.plane": {
+                "labor": {
+                    "operator": "+",
+                    "value1": "${setting:ficility_type_dict:basic.road:development:?:labor}",
+                    "value2": 2
+                },
+                "supply": {
+                    "operator": "+",
+                    "value1": "${setting:ficility_type_dict:basic.road:development:?:supply}",
+                    "value2": 10
+                }
+            }
+        },
+        "yield": {
+            "money": 2
+        }
+    },
+    "basic.resort": {
+        "name": "リゾート",
+        "kind": "workplace",
+        "function_id": "commerce",
+        "tech": 3,
+        "can_develop_on_forest": [
+            "sparse"
+        ],
+        "development": {
+            "*.mountain": {
+                "labor": {
+                    "operator": "+",
+                    "value1": "${setting:ficility_type_dict:basic.road:development:?:labor}",
+                    "value2": 3
+                },
+                "supply": {
+                    "operator": "+",
+                    "value1": "${setting:ficility_type_dict:basic.road:development:?:supply}",
+                    "value2": 15
+                }
+            },
+            "*.coast": {
+                "labor": 3,
+                "supply": 15
+            }
+        },
+        "yield": {
+            "money": 3
+        }
+    },
+    "basic.complex": {
+        "name": "複合施設",
+        "kind": "workplace",
+        "function_id": "commerce",
+        "tech": 4,
+        "can_develop_on_forest": [
+            "sparse"
+        ],
+        "development": {
+            "*.hill|*.plane": {
+                "labor": {
+                    "operator": "+",
+                    "value1": "${setting:ficility_type_dict:basic.road:development:?:labor}",
+                    "value2": 4
+                },
+                "supply": {
+                    "operator": "+",
+                    "value1": "${setting:ficility_type_dict:basic.road:development:?:supply}",
+                    "value2": 20
+                }
+            }
+        },
+        "yield": {
+            "money": 4
+        }
+    },
+|監視塔|観測|0|疎林・森|3|道路+2|そのマスにいるユニットの視界が+2になる|
+|防衛陣地|軍事|0|疎林・森|3|道路+2|そのマスにいるユニットの地形防御ボーナス+0.5|
+    "basic.watchtower": {
+        "name": "監視塔",
+        "kind": "utility",
+        "function_id": "surveillance",
+        "tech": 0,
+        "can_develop_on_forest": [
+            "sparse",
+            "moderate"
+        ],
+    },
+    "basic.fort": {
+        "name": "防衛陣地",
+        "kind": "utility",
+        "function_id": "militaly",
+        "tech": 0,
+        "can_develop_on_forest": [
+            "sparse",
+            "moderate"
+        ],
+    },
+    "basic.port": {
+        "name": "港",
+        "kind": "utility",
+        "function_id": "stevedoring",
+        "tech": 1,
+        "can_develop_on_forest": [
+            "sparse"
+        ],
+        "development": {
+            "*.coast": {
+                "labor": 2,
+                "supply": 15
+            }
+        },
+        "enable_loading_ship": true,
+        "entry_cost_for_water_unit": 1,
+        "entry_cost_for_land_unit": 1
+    },
+    "basic.road": {
+        "name": "道路",
+        "kind": "mobility",
+        "function_id": "transportation",
+        "tech": 0,
+        "can_develop_on_forest": [
+            "sparse",
+            "moderate"
+        ],
+        "development": {
+            "*.hill|*.plane": {
+                "labor": 1,
+                "supply": 0
+            },
+            "*.mountain": {
+                "labor": 3,
+                "supply": 5
+            }
+        },
+        "entry_cost_for_land_unit": 1
+    },
+}

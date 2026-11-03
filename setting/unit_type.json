@@ -1,0 +1,219 @@
+{
+    "basic.settler": {
+        "name": "開拓者",
+        "is_soldier": false,
+        "territory": "land",
+        "max_recruit_ratio": 1.0,
+        "max_food": 20,
+        "max_supply": 10,
+        "max_material": 0,
+        "armament": 1,
+        "basic_morale": 1,
+        "basic_sight": 2,
+        "move": 1,
+        "move_type_id": "basic.walk",
+        "can_settle": true,
+        "can_build_function_ids": [
+            "agriculture",
+            "forestry",
+            "fisheries"
+        ]
+    },
+    "basic.laborer": {
+        "name": "労働者",
+        "is_soldier": false,
+        "territory": "land",
+        "max_recruit_ratio": 0.5,
+        "max_food": 10,
+        "max_supply": 20,
+        "max_material": 0,
+        "armament": 1,
+        "basic_morale": 1,
+        "basic_sight": 2,
+        "move": 1,
+        "move_type_id": "basic.walk",
+        "can_build_function_ids": [
+            "stevedoring",
+            "transportation",
+            "mining"
+        ]
+    },
+    "baisc.carter": {
+        "name": "輸送隊",
+        "is_soldier": false,
+        "territory": "land",
+        "max_recruit_ratio": 0.5,
+        "max_food": 100,
+        "max_supply": 100,
+        "max_material": 100,
+        "armament": 1,
+        "basic_morale": 1,
+        "basic_sight": 2,
+        "move": 1,
+        "move_type_id": "basic.carriage"
+    },
+    "basic.cleric": {
+        "name": "聖職者",
+        "is_soldier": false,
+        "territory": "land",
+        "max_recruit_ratio": 0.2,
+        "max_food": 10,
+        "max_supply": 10,
+        "max_material": 0,
+        "armament": 1,
+        "basic_morale": 1,
+        "basic_sight": 2,
+        "move": 1,
+        "move_type_id": "basic.walk",
+        "can_build_function_ids": [
+            "religion"
+        ]
+    },
+    "basic.merchant": {
+        "name": "商人",
+        "is_soldier": false,
+        "territory": "land",
+        "max_recruit_ratio": 0.2,
+        "max_food": 10,
+        "max_supply": 10,
+        "max_material": 0,
+        "armament": 1,
+        "basic_morale": 1,
+        "basic_sight": 2,
+        "move": 1,
+        "move_type_id": "basic.walk",
+        "can_build_function_ids": [
+            "commerce"
+        ]
+    },
+    "basic.researcher": {
+        "name": "研究者",
+        "is_soldier": false,
+        "territory": "land",
+        "max_recruit_ratio": 0.2,
+        "max_food": 10,
+        "max_supply": 10,
+        "max_material": 0,
+        "armament": 1,
+        "basic_morale": 1,
+        "basic_sight": 2,
+        "move": 1,
+        "move_type_id": "basic.walk",
+        "can_build_function_ids": [
+            "research"
+        ]
+    },
+    "basic.craftsman": {
+        "name": "職人",
+        "is_soldier": false,
+        "territory": "land",
+        "max_recruit_ratio": 0.2,
+        "max_food": 10,
+        "max_supply": 10,
+        "max_material": 0,
+        "armament": 1,
+        "basic_morale": 1,
+        "basic_sight": 2,
+        "move": 1,
+        "move_type_id": "basic.walk",
+        "can_build_function_ids": [
+            "manufacturing"
+        ]
+    },
+    "basic.explorer": {
+        "name": "探検隊",
+        "is_soldier": false,
+        "territory": "land",
+        "max_recruit_ratio": 0.5,
+        "max_food": 25,
+        "max_supply": 5,
+        "max_material": 0,
+        "armament": 1,
+        "basic_morale": 2,
+        "basic_sight": 2,
+        "move": 2,
+        "move_type_id": "basic.walk",
+        "can_build_function_ids": [
+            "surveillance"
+        ]
+    },
+    "basic.infantry": {
+        "name": "歩兵",
+        "is_soldier": true,
+        "territory": "land",
+        "max_recruit_ratio": 0.5,
+        "max_food": 15,
+        "max_supply": 15,
+        "max_material": 0,
+        "armament": 2,
+        "basic_morale": 5,
+        "basic_sight": 2,
+        "move": 1,
+        "move_type_id": "basic.walk",
+        "can_settle": false,
+        "can_shoot": true,
+        "can_build_function_ids": [
+            "militaly"
+        ]
+    },
+    "basic.cavalry": {
+        "name": "騎兵",
+        "is_soldier": true,
+        "territory": "land",
+        "max_recruit_ratio": 0.1,
+        "max_food": 15,
+        "max_supply": 5,
+        "max_material": 0,
+        "armament": 2,
+        "armament_on_board": -1,
+        "basic_morale": 10,
+        "basic_sight": 2,
+        "move": 2,
+        "move_type_id": "basic.horse",
+        "can_shoot": true
+    },
+    "basic.tank": {
+        "name": "戦車",
+        "is_soldier": true,
+        "territory": "land",
+        "max_recruit_ratio": 0.5,
+        "max_food": 15,
+        "max_supply": 15,
+        "max_material": 0,
+        "armament": 3,
+        "armament_on_board": -1,
+        "basic_morale": 5,
+        "basic_sight": 2,
+        "move": 2,
+        "move_type_id": "basic.tracked",
+        "can_shoot": true
+    },
+    "basic.merchantman": {
+        "name": "輸送船",
+        "is_soldier": false,
+        "territory": "water",
+        "max_recruit_ratio": 0.2,
+        "max_food": 200,
+        "max_supply": 200,
+        "max_material": 200,
+        "armament": 1,
+        "basic_morale": 2,
+        "basic_sight": 2,
+        "move": 3,
+        "move_type_id": "basic.ship"
+    },
+    "basic.warship": {
+        "name": "軍船",
+        "is_soldier": true,
+        "territory": "water",
+        "max_recruit_ratio": 0.2,
+        "max_food": 100,
+        "max_supply": 100,
+        "max_material": 0,
+        "armament": 2,
+        "basic_morale": 5,
+        "basic_sight": 2,
+        "move": 3,
+        "move_type_id": "basic.ship"
+    }
+}
