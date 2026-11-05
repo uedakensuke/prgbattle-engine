@@ -60,7 +60,7 @@
           "description": "width * height個の要素を持つ配列",
           "items": {
             "type": "string",
-            "description": "地域名"
+            "description": "エリア"
           }
         },
         "max_temperature": {
